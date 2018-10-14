@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 
-def model():
+def assignment_4():
     # data
     data = csv_to_dataframe('sine.csv')
     train_x, test_x, train_y, test_y = train_test_split(data['X'], data['Y'], test_size=0.80, random_state=20)
@@ -14,6 +14,7 @@ def model():
     number_of_steps = 500
 
     input_test = np.arange(-1.0, 1.0, 0.05, dtype=float)
+
     feature_columns = [
         tf.feature_column.numeric_column(key="X")
     ]
@@ -35,14 +36,11 @@ def model():
     model = tf.estimator.DNNRegressor(feature_columns=feature_columns,
                                       hidden_units=[3, 3],
                                       optimizer=lambda: tf.train.AdamOptimizer(
-                                        learning_rate=tf.train.exponential_decay(
-                                        learning_rate=0.01,
-                                        global_step=tf.train.get_global_step(),
-                                        decay_steps=10000,
-                                        decay_rate=1))
-                                      )
+                                          learning_rate=tf.train.exponential_decay(learning_rate=0.01,
+                                                                                   global_step=tf.train.get_global_step(),
+                                                                                   decay_steps=10000,
+                                                                                   decay_rate=1)))
 
-    # train_x_tensor = tf.constant(train_x.astype(float))
     model.train(input_fn=train_input_fn, steps=number_of_steps)
     # Evaluate how the model performs on data it has not yet seen.
     eval_result = model.evaluate(input_fn=test_input_fn)
@@ -62,8 +60,8 @@ def model():
     plt.show()
 
 
+assignment_3()
 
-model()
 
 
 
